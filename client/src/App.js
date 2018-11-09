@@ -1,17 +1,11 @@
 import React, { Component } from 'react';
 import axios from 'axios';
+import { Route, Link } from 'react-router-dom';
 import './App.css';
 
-const Project = props => {
-  const { name, description } = props.project;
-  return (
-    <div>
-      <h1>{name}</h1>
-      <p>{description}</p>
-      <hr />
-    </div>
-  );
-}
+import Projects from './components/Projects';
+import Project from './components/Project';
+import Actions from './components/Actions';
 
 class App extends Component {
   state = {
@@ -33,16 +27,20 @@ class App extends Component {
   }
 
   render() {
-    const { projects } = this.state;
-    const project = projects.map(project => {
-      return (
-        <Project project={project} />
-      );
-    });
+    const { projects, actions } = this.state;
 
     return (
       <div className="App">
-        {project}
+        <Link exact to="/"><h1>Projects</h1></Link>
+        <Route
+          exact path="/"
+          render={ownProps => <Projects {...ownProps} projects={projects} />}
+        />
+        <Route
+          path="/:id"
+          render={ownProps => <Project {...ownProps} projects={projects} />}
+        />
+
       </div>
     );
   }
